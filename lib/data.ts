@@ -76,22 +76,23 @@ export const projectsData = [
 ] as const;
 
 export const skillsData = [
-  'Python',
-  'JAVA',
-  'Bash',
   'AWS Cloud',
+  'Kubernetes'
   'Terraform',
   'Ansible',
   'Docker',
-  'Kubernetes',
   'Jenkins',
   'Prometheus',
   'Grafana',
+  'Nexus',
+  'Maven',
+  'Python',
+  'JAVA',
   'Linux',
+  'Bash',
   'ChatGPT',
   'Google',
   'Slack',
   'Git',
-  'Nexus',
-  'Maven',
+  
 ] as const;
