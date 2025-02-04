@@ -77,7 +77,7 @@ export const projectsData = [
 
 export const skillsData = [
   'AWS Cloud',
-  'Kubernetes'
+  'Kubernetes',
   'Terraform',
   'Ansible',
   'Docker',
