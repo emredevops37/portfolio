@@ -93,6 +93,6 @@ export const skillsData = [
   'ChatGPT',
   'Google',
   'Slack',
-  'Git',
+  'Git'
   
 ] as const;
