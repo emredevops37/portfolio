@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Image from "next/image";
 import SectionHeading from "./section-heading";
 import {
   VerticalTimeline,
@@ -45,7 +46,16 @@ export default function Experience() {
               }}
             >
               <h3 className="font-semibold capitalize">{item.title}</h3>
-              <p className="font-normal !mt-0">{item.location}</p>
+              <p className="font-normal !mt-0 flex items-center gap-2">
+                <Image
+                  src={item.logo}
+                  alt={item.location}
+                  width={20}
+                  height={20}
+                  className="rounded-sm object-contain"
+                />
+                {item.location}
+              </p>
               <p className="!mt-1 !font-normal text-gray-700 dark:text-white/75">
                 {item.description}
               </p>
