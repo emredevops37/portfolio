@@ -40,7 +40,7 @@ export const experiencesData = [
     description:
       'Managing and maintaining Kubernetes clusters in production environments. Building and optimizing GitLab CI/CD pipelines for automated build, test, and deployment workflows. Containerizing applications with Docker and orchestrating multi-service environments using Docker Compose. Integrating SonarQube for static code analysis and enforcing code quality gates. Managing artifact repositories with Nexus and Harbor for secure image storage and distribution. Working with a broad DevOps toolchain to streamline infrastructure operations and improve deployment reliability.',
     icon: React.createElement(CgWorkAlt),
-    date: 'October 2025 – Present',
+    date: 'September 2025 – Present',
   },
   {
     title: 'DevOps Engineer',
@@ -49,7 +49,7 @@ export const experiencesData = [
     description:
       'Experience with troubleshooting and debugging Docker containers. Implemented continuous integration and continuous delivery (CI/CD) pipelines using Jenkins and other tools, resulting in a 40% improvement in release velocity. Experienced in installing, configuring, and updating Nginx. Effectively configured Nginx to improve the performance of web servers. Used Grafana to visualize Prometheus metrics, resulting in a 50% reduction in the time required to identify and resolve performance issues.',
     icon: React.createElement(CgWorkAlt),
-    date: 'May 2024 – September 2025',
+    date: 'May 2024 – August 2025',
   },
   {
     title: 'AWS & DevOps Engineer',
@@ -95,6 +95,7 @@ export const skillsData = [
   'Docker',
   'Jenkins',
   'GitLab',
+  'ELK',
   'Prometheus',
   'Grafana',
   'Nexus',
