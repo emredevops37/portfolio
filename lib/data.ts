@@ -88,22 +88,22 @@ export const projectsData = [
 
 export const skillsData = [
   'AWS Cloud',
+  'AI',
   'Kubernetes',
   'Terraform',
   'Ansible',
   'Docker',
   'Jenkins',
+  'GitLab',
   'Prometheus',
   'Grafana',
   'Nexus',
+  'Harbor',
   'Maven',
+  'Nuget',
   'Python',
   'JAVA',
   'Linux',
   'Bash',
-  'ChatGPT',
-  'Google',
-  'Slack',
-  'Git'
-  
+  'Git',
 ] as const;
