@@ -9,10 +9,14 @@ import { HiDownload } from 'react-icons/hi';
 import { FaGithubSquare } from 'react-icons/fa';
 import { useSectionInView } from '@/lib/hooks';
 import { useActiveSectionContext } from '@/context/active-section-context';
+import { useLanguage } from '@/context/language-context';
+import { translations } from '@/lib/translations';
 
 export default function Intro() {
   const { ref } = useSectionInView('Home', 0.5);
   const { setActiveSection, setTimeOfLastClick } = useActiveSectionContext();
+  const { language } = useLanguage();
+  const t = translations[language].intro;
 
   return (
     <section ref={ref} id="home" className="mb-28 max-w-[50rem] text-center sm:mb-0 scroll-mt-[100rem]">
@@ -26,7 +30,7 @@ export default function Intro() {
               duration: 0.2,
             }}>
             <Image
-              src="/emre.jpg" // Görsel yolu
+              src="/emre.jpg"
               alt="Emre Aktaş"
               width="192"
               height="192"
@@ -52,8 +56,13 @@ export default function Intro() {
       </div>
 
       <motion.h1 className="mb-10 mt-4 px-4 text-2xl font-medium !leading-[1.5] sm:text-4xl" initial={{ opacity: 0, y: 100 }} animate={{ opacity: 1, y: 0 }}>
-        <span className="font-bold">Hello, I'm Emre.</span> I'm a <span className="font-bold">DevOps Engineer</span> with <span className="font-bold">4+ years</span> of experience. Passionate about{' '}
-        <span className="italic">cloud-native technologies and infrastructure automation</span>, I thrive on optimizing systems for <span className="underline">efficiency and scalability</span>.
+        <span className="font-bold">{t.greeting}</span>{' '}
+        {t.iam} <span className="font-bold">{t.role}</span>{' '}
+        {t.withYears} <span className="font-bold">{t.years}</span>{' '}
+        {t.ofExp}{' '}
+        <span className="italic">{t.passion}</span>
+        {t.iThrive}
+        <span className="underline">{t.optimize}</span>{t.period}
       </motion.h1>
 
       <motion.div
@@ -70,14 +79,14 @@ export default function Intro() {
             setActiveSection('Contact');
             setTimeOfLastClick(Date.now());
           }}>
-          Contact me here <BsArrowRight className="opacity-70 group-hover:translate-x-1 transition" />
+          {t.contactBtn} <BsArrowRight className="opacity-70 group-hover:translate-x-1 transition" />
         </Link>
 
         <a
           className="group bg-white px-7 py-3 flex items-center gap-2 rounded-full outline-none focus:scale-110 hover:scale-110 active:scale-105 transition cursor-pointer borderBlack dark:bg-white/10"
           href="/Emre_Aktas.pdf"
           download>
-          Download CV <HiDownload className="opacity-60 group-hover:translate-y-1 transition" />
+          {t.downloadCV} <HiDownload className="opacity-60 group-hover:translate-y-1 transition" />
         </a>
 
         <a

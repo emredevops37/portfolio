@@ -7,9 +7,13 @@ import { useSectionInView } from '@/lib/hooks';
 import { sendEmail } from '@/actions/sendEmail';
 import SubmitBtn from './submit-btn';
 import toast from 'react-hot-toast';
+import { useLanguage } from '@/context/language-context';
+import { translations } from '@/lib/translations';
 
 export default function Contact() {
   const { ref } = useSectionInView('Contact');
+  const { language } = useLanguage();
+  const t = translations[language].contact;
 
   const formRef = useRef<HTMLFormElement>(null);
 
@@ -30,28 +34,28 @@ export default function Contact() {
       viewport={{
         once: true,
       }}>
-      <SectionHeading>Contact me</SectionHeading>
+      <SectionHeading>{t.heading}</SectionHeading>
 
       <p className="text-gray-700 -mt-6 dark:text-white/80">
-        Please contact me directly at{' '}
-        <a className="underline" href="mailto:example@gmail.com">
+        {t.desc1}{' '}
+        <a className="underline" href="mailto:emrkts37@gmail.com">
           emrkts37@gmail.com
         </a>{' '}
-        or through this form.
+        {t.desc2}
       </p>
 
       <form
-        ref={formRef} // Bu satırı ekleyin
+        ref={formRef}
         className="mt-10 flex flex-col dark:text-black"
         action={async formData => {
-          const { data, error } = await sendEmail(formData);
+          const { error } = await sendEmail(formData);
 
           if (error) {
             toast.error(error);
             return;
           }
 
-          toast.success('Email sent successfully!');
+          toast.success(t.successMsg);
           formRef.current?.reset();
         }}>
         <input
@@ -60,12 +64,12 @@ export default function Contact() {
           type="email"
           required
           maxLength={500}
-          placeholder="Your email"
+          placeholder={t.emailPlaceholder}
         />
         <textarea
           className="h-52 my-3 rounded-lg borderBlack p-4 dark:bg-white dark:bg-opacity-80 dark:focus:bg-opacity-100 transition-all dark:outline-none"
           name="message"
-          placeholder="Your message"
+          placeholder={t.messagePlaceholder}
           required
           maxLength={5000}
         />
