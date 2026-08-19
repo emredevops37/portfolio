@@ -1,0 +1,56 @@
+---
+title: "Kubernetes Project"
+excerpt: "Deploying a full-stack app on Kubernetes with a MySQL database, persistent storage, and dedicated frontend/backend deployments."
+date: "2024-03-10"
+tags: ["Kubernetes", "Docker", "MySQL", "Persistent Volume", "Backend", "Frontend"]
+coverImage: "/KubernetesNew.jpeg"
+---
+
+## Overview
+
+This project started as an exercise in understanding how a real, stateful web application behaves once it moves from `docker-compose` to a proper Kubernetes cluster. The goal was to run a web application with a MySQL database, where both the frontend and backend are managed as independent Kubernetes deployments.
+
+## Architecture
+
+The application is split into three moving pieces:
+
+- **Frontend deployment** — serves the client application behind its own `Service`
+- **Backend deployment** — exposes an internal API consumed by the frontend
+- **MySQL deployment** — backed by a `PersistentVolume` and `PersistentVolumeClaim` so data survives pod restarts
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mysql
+  template:
+    metadata:
+      labels:
+        app: mysql
+    spec:
+      containers:
+        - name: mysql
+          image: mysql:8.0
+          volumeMounts:
+            - name: mysql-storage
+              mountPath: /var/lib/mysql
+      volumes:
+        - name: mysql-storage
+          persistentVolumeClaim:
+            claimName: mysql-pvc
+```
+
+## Data persistence
+
+Without a `PersistentVolumeClaim`, restarting the MySQL pod would wipe every table. Binding the claim to the deployment's volume mount ensures the database survives rescheduling, node failures, and rolling updates — the same guarantee you'd expect from a managed database service, built from primitives.
+
+## What I'd improve next
+
+- Add a `StatefulSet` for MySQL instead of a plain `Deployment`, for stronger identity guarantees
+- Introduce a Horizontal Pod Autoscaler on the backend deployment
+- Move secrets (DB credentials) out of plain manifests and into a `Secret` resource

@@ -1,0 +1,36 @@
+---
+title: "AWS Infrastructure Project"
+excerpt: "A scalable AWS setup with an Application Load Balancer, Auto Scaling EC2 group, RDS, CloudFront, and Route 53 in front of a blog platform."
+date: "2024-06-02"
+tags: ["AWS", "EC2", "RDS", "S3", "CloudFront", "Route 53", "Infrastructure"]
+coverImage: "/aws.png"
+---
+
+## Overview
+
+This project builds the infrastructure for a media-heavy blog platform — one where users upload images and video, and traffic can spike unpredictably. Rather than a single EC2 instance, the goal was a setup that scales horizontally and stays available under load.
+
+## Infrastructure layout
+
+Everything lives inside a dedicated VPC:
+
+- **Application Load Balancer (ALB)** — distributes incoming traffic across instances and terminates TLS
+- **Auto Scaling Group of EC2 instances** — scales out on CPU/traffic thresholds, scales back in when load drops
+- **RDS** — a managed relational database, isolated in private subnets, not reachable from the public internet
+- **S3** — stores uploaded images and videos, decoupling media storage from the application servers entirely
+- **CloudFront** — CDN in front of S3 and the ALB, caching static assets close to users
+- **Route 53** — DNS and health-check based routing in front of CloudFront
+
+## Why offload media to S3
+
+Storing uploads on the EC2 instances themselves would tie media to a single machine — a scaling nightmare and a single point of failure. Writing uploads directly to S3 (via presigned URLs from the backend) means:
+
+- Any instance in the Auto Scaling Group can serve any request, statelessly
+- Storage scales independently of compute
+- CloudFront can cache media at edge locations without touching the origin servers
+
+## What I'd improve next
+
+- Move RDS to a Multi-AZ deployment for automatic failover
+- Add a WAF in front of CloudFront for basic request filtering
+- Script the whole stack with Terraform instead of manual console setup, for repeatability

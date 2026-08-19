@@ -7,6 +7,7 @@ export const translations = {
       Skills: "Skills",
       Experience: "Experience",
       Contact: "Contact",
+      Blog: "Blog",
     },
     intro: {
       greeting: "Hello, I'm Emre.",
@@ -28,6 +29,10 @@ export const translations = {
     skills: { heading: "My skills" },
     experience: { heading: "My experience" },
     projects: { heading: "My projects" },
+    blog: {
+      heading: "Blog",
+      backToBlog: "Back to blog",
+    },
     contact: {
       heading: "Contact me",
       desc1: "Please contact me directly at",
@@ -45,6 +50,7 @@ export const translations = {
       Skills: "Beceriler",
       Experience: "Deneyim",
       Contact: "İletişim",
+      Blog: "Blog",
     },
     intro: {
       greeting: "Merhaba, ben Emre.",
@@ -66,6 +72,10 @@ export const translations = {
     skills: { heading: "Becerilerim" },
     experience: { heading: "Deneyimim" },
     projects: { heading: "Projelerim" },
+    blog: {
+      heading: "Blog",
+      backToBlog: "Blog'a dön",
+    },
     contact: {
       heading: "İletişim",
       desc1: "Bana doğrudan",

@@ -1,7 +1,5 @@
 'use server';
 
-// re_BQgw1qWU_A7vCyqDvyFJ2h8GXCzgpWZLJ
-
 import React from 'react';
 import { Resend } from 'resend';
 import { validateString, getErrorMessage } from '@/lib/utils';

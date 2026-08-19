@@ -1,0 +1,36 @@
+---
+title: "AWS Altyapı Projesi"
+excerpt: "Bir blog platformunun önünde Application Load Balancer, Auto Scaling EC2 grubu, RDS, CloudFront ve Route 53 ile ölçeklenebilir bir AWS kurulumu."
+date: "2024-06-02"
+tags: ["AWS", "EC2", "RDS", "S3", "CloudFront", "Route 53", "Infrastructure"]
+coverImage: "/aws.png"
+---
+
+## Genel Bakış
+
+Bu proje, kullanıcıların görsel ve video yüklediği, trafiğin öngörülemez şekilde artabildiği medya ağırlıklı bir blog platformu için altyapı kurar. Tek bir EC2 instance yerine amaç, yatay olarak ölçeklenen ve yük altında erişilebilir kalan bir kurulum oluşturmaktı.
+
+## Altyapı düzeni
+
+Her şey özel bir VPC içinde yaşar:
+
+- **Application Load Balancer (ALB)** — gelen trafiği instance'lar arasında dağıtır ve TLS'i sonlandırır
+- **Auto Scaling Group (EC2 instance'ları)** — CPU/trafik eşiklerine göre büyür, yük düştüğünde küçülür
+- **RDS** — private subnet'lerde izole edilmiş, genel internetten erişilemeyen yönetilen bir ilişkisel veritabanı
+- **S3** — yüklenen görsel ve videoları depolar, medya depolamayı uygulama sunucularından tamamen ayırır
+- **CloudFront** — S3 ve ALB'nin önünde bir CDN, statik varlıkları kullanıcılara yakın önbelleğe alır
+- **Route 53** — CloudFront'un önünde DNS ve health-check tabanlı yönlendirme
+
+## Medyayı S3'e taşımanın nedeni
+
+Yüklemeleri doğrudan EC2 instance'larında saklamak medyayı tek bir makineye bağlardı — hem ölçeklendirme kabusu hem de tek arıza noktası. Yüklemeleri backend'den alınan presigned URL'ler aracılığıyla doğrudan S3'e yazmak şu anlama gelir:
+
+- Auto Scaling Group'taki herhangi bir instance, herhangi bir isteği durumsuz (stateless) şekilde karşılayabilir
+- Depolama, hesaplama kaynağından bağımsız olarak ölçeklenir
+- CloudFront, origin sunuculara dokunmadan medyayı edge lokasyonlarında önbelleğe alabilir
+
+## Sıradaki iyileştirmeler
+
+- Otomatik failover için RDS'i Multi-AZ deployment'a taşımak
+- Temel istek filtreleme için CloudFront'un önüne bir WAF eklemek
+- Tekrarlanabilirlik için tüm stack'i manuel konsol kurulumu yerine Terraform ile script'lemek

@@ -1,0 +1,56 @@
+---
+title: "Kubernetes Projesi"
+excerpt: "MySQL veritabanı, kalıcı depolama ve ayrı frontend/backend deployment'ları ile Kubernetes üzerinde tam yığın bir uygulama yayınlama."
+date: "2024-03-10"
+tags: ["Kubernetes", "Docker", "MySQL", "Persistent Volume", "Backend", "Frontend"]
+coverImage: "/KubernetesNew.jpeg"
+---
+
+## Genel Bakış
+
+Bu proje, gerçek ve durum bilgisi tutan (stateful) bir web uygulamasının `docker-compose`'dan gerçek bir Kubernetes cluster'ına taşındığında nasıl davrandığını anlamak amacıyla başladı. Amaç, hem frontend hem backend'in bağımsız Kubernetes deployment'ları olarak yönetildiği, MySQL veritabanlı bir web uygulaması çalıştırmaktı.
+
+## Mimari
+
+Uygulama üç ayrı parçaya bölündü:
+
+- **Frontend deployment** — kendi `Service`'i arkasında istemci uygulamasını sunar
+- **Backend deployment** — frontend tarafından tüketilen dahili bir API sunar
+- **MySQL deployment** — pod yeniden başlatmalarında verinin korunması için bir `PersistentVolume` ve `PersistentVolumeClaim` ile desteklenir
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mysql
+  template:
+    metadata:
+      labels:
+        app: mysql
+    spec:
+      containers:
+        - name: mysql
+          image: mysql:8.0
+          volumeMounts:
+            - name: mysql-storage
+              mountPath: /var/lib/mysql
+      volumes:
+        - name: mysql-storage
+          persistentVolumeClaim:
+            claimName: mysql-pvc
+```
+
+## Veri kalıcılığı
+
+Bir `PersistentVolumeClaim` olmadan, MySQL pod'unu yeniden başlatmak tüm tabloları silerdi. Claim'i deployment'ın volume mount'una bağlamak, veritabanının yeniden zamanlama, node arızaları ve rolling update'ler boyunca hayatta kalmasını sağlar — yönetilen bir veritabanı servisinden beklenen garantinin aynısı, temel yapı taşlarından inşa edilmiş hali.
+
+## Sıradaki iyileştirmeler
+
+- MySQL için düz bir `Deployment` yerine daha güçlü kimlik garantileri sunan bir `StatefulSet` kullanmak
+- Backend deployment'ına bir Horizontal Pod Autoscaler eklemek
+- Secret'ları (DB kimlik bilgileri) düz manifestlerden çıkarıp bir `Secret` kaynağına taşımak
